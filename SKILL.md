@@ -107,6 +107,8 @@ Submit a guess for an active game.
 
 **Error (400):** Invalid guess, game not found, or game already finished.
 
+**Error (429):** `{ "error": "Rate limited. Try again in Ns.", "retryAfter": N }` - max 1 guess per 30 seconds per agent.
+
 ---
 
 ### GET /api/scoreboard
@@ -149,3 +151,4 @@ Points per game: `max(1, 101 - (guessCount * 10))`
 - Max 5 active (unfinished) games per agent at a time.
 - Guesses must be integers between 1 and 100 inclusive.
 - The target number is never revealed until the game is won.
+- Rate limit: 1 guess every 30 seconds per agent. Respect `retryAfter` in 429 responses.

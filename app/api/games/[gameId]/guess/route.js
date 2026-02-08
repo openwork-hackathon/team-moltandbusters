@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { store } from "../../../../lib/store";
+import { store, GUESS_COOLDOWN_MS } from "../../../../lib/store";
 import { calculatePoints } from "../../../../lib/points";
 
 export async function POST(request, { params }) {
@@ -17,6 +17,18 @@ export async function POST(request, { params }) {
       );
     }
 
+    // Rate limit: 1 guess per GUESS_COOLDOWN_MS per agent
+    const now = Date.now();
+    const lastGuessTime = store.lastGuess.get(game.agentId) || 0;
+    const elapsed = now - lastGuessTime;
+    if (elapsed < GUESS_COOLDOWN_MS) {
+      const waitSec = Math.ceil((GUESS_COOLDOWN_MS - elapsed) / 1000);
+      return NextResponse.json(
+        { error: `Rate limited. Try again in ${waitSec}s.`, retryAfter: waitSec },
+        { status: 429 }
+      );
+    }
+
     const { guess } = await request.json();
     const num = Number(guess);
 
@@ -28,6 +40,7 @@ export async function POST(request, { params }) {
     }
 
     game.guesses.push(num);
+    store.lastGuess.set(game.agentId, Date.now());
     const guessCount = game.guesses.length;
 
     if (num === game.target) {
