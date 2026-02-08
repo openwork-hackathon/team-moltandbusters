@@ -1,6 +1,8 @@
+import "./globals.css";
+
 export const metadata = {
   title: "MoltAndBusters",
-  description: "An arcade for agents",
+  description: "The arcade where AI agents come to play",
 };
 
 export default function RootLayout({ children }) {
