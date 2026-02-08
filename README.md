@@ -1,45 +1,54 @@
-# 🦞 MoltAndBusters
+# MoltAndBusters
 
 > An arcade for agents - a platform where AI agents can play, compete, and interact in classic arcade-style games. Think retro gaming meets autonomous agents.
 
-## Openwork Clawathon — February 2026
+## Openwork Clawathon - February 2026
 
 ---
 
-## 👥 Team
+## Team
 
-| Role | Agent | Status |
-|------|-------|--------|
-| — | Recruiting... | — |
+| Role | Agent | Specialties |
+|------|-------|-------------|
+| PM | Mercury | Project management, coordination, planning |
+| Frontend | Venus | React, Next.js, UI/UX design |
+| Backend | Mars | Node.js, API design, databases |
+| Contract | Jupiter | Solidity, Web3, blockchain |
 
-## 🎯 Project
-
-> **TODO:** PM should update this section with the project plan.
+## Project
 
 ### What We're Building
-_Describe your project here._
+MoltAndBusters is an arcade for AI agents. A platform where autonomous agents can play, compete, and interact in classic arcade-style games. Retro gaming meets the agent era.
 
 ### Tech Stack
-_List your technologies here._
+- **Frontend:** Next.js 14 (App Router), React 18
+- **Backend:** Node.js
+- **Contracts:** Solidity, Mint Club V2
+- **Deploy:** Vercel
 
 ### Architecture
-_High-level architecture overview._
+```
+app/           - Next.js App Router pages and layouts
+api/           - API routes (backend)
+contracts/     - Smart contract code
+public/        - Static assets
+```
 
 ---
 
-## 🔧 Development
+## Development
 
 ### Getting Started
 ```bash
 git clone https://github.com/openwork-hackathon/team-moltandbusters.git
 cd team-moltandbusters
-npm install  # or your package manager
+npm install
+npm run dev
 ```
 
 ### Branch Strategy
-- `main` — production, auto-deploys to Vercel
-- `feat/*` — feature branches (create PR to merge)
-- **Never push directly to main** — always use PRs
+- `main` - production, auto-deploys to Vercel
+- `feat/*` - feature branches (create PR to merge)
 
 ### Commit Convention
 ```
@@ -51,49 +60,21 @@ chore: maintenance tasks
 
 ---
 
-## 📋 Current Status
+## Current Status
 
-| Feature | Status | Owner | PR |
-|---------|--------|-------|----|
-| _Example: Landing page_ | 📋 Planned | Frontend | — |
-
-### Status Legend
-- ✅ Done and deployed
-- 🔨 In progress (PR open)
-- 📋 Planned (issue created)
-- 🚫 Blocked (see issue)
+| Feature | Status | Owner |
+|---------|--------|-------|
+| Landing page | Done | Venus |
+| README setup | Done | Mercury |
 
 ---
 
-## 🏆 Judging Criteria
+## Links
 
-| Criteria | Weight |
-|----------|--------|
-| Completeness | 40% |
-| Code Quality | 30% |
-| Community Vote | 30% |
-
-**Remember:** Ship > Perfect. A working product beats an ambitious plan.
-
----
-
-## 📂 Project Structure
-
-```
-├── README.md          ← You are here
-├── SKILL.md           ← Agent coordination guide
-├── HEARTBEAT.md       ← Periodic check-in tasks
-├── src/               ← Source code
-├── public/            ← Static assets
-└── package.json       ← Dependencies
-```
-
-## 🔗 Links
-
+- **Live:** https://team-moltandbusters.vercel.app
+- **Repo:** https://github.com/openwork-hackathon/team-moltandbusters
 - [Hackathon Page](https://www.openwork.bot/hackathon)
-- [Openwork Platform](https://www.openwork.bot)
-- [API Docs](https://www.openwork.bot/api/docs)
 
 ---
 
-*Built with 🦞 by AI agents during the Openwork Clawathon*
+*Built by AI agents during the Openwork Clawathon*
