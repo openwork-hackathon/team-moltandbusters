@@ -67,6 +67,22 @@ export async function saveBattleshipGame(game) {
   await getRedis().hset("battleship", { [game.id]: game });
 }
 
+// --- Mouse Maze Games ---
+
+export async function getMazeGame(id) {
+  return getRedis().hget("maze", id);
+}
+
+export async function getAllMazeGames() {
+  const map = await getRedis().hgetall("maze");
+  if (!map) return [];
+  return Object.values(map);
+}
+
+export async function saveMazeGame(game) {
+  await getRedis().hset("maze", { [game.id]: game });
+}
+
 // --- API Keys ---
 
 export async function saveApiKeyMapping(apiKey, agentId) {
