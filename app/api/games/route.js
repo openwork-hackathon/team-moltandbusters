@@ -1,28 +1,16 @@
 import { NextResponse } from "next/server";
-import { getAgent, getAllGames, saveGame } from "../../lib/store";
+import { getAllGames, saveGame } from "../../lib/store";
+import { authenticateRequest, unauthorizedResponse } from "../../lib/auth";
 
 export async function POST(request) {
   try {
-    const { agentId } = await request.json();
-    if (!agentId) {
-      return NextResponse.json(
-        { error: "agentId is required" },
-        { status: 400 }
-      );
-    }
-
-    const agent = await getAgent(agentId);
-    if (!agent) {
-      return NextResponse.json(
-        { error: "Agent not found" },
-        { status: 400 }
-      );
-    }
+    const agent = await authenticateRequest(request);
+    if (!agent) return unauthorizedResponse();
 
     // Check active game limit
     const allGames = await getAllGames();
     const activeCount = allGames.filter(
-      (g) => g.agentId === agentId && g.status === "active"
+      (g) => g.agentId === agent.id && g.status === "active"
     ).length;
     if (activeCount >= 5) {
       return NextResponse.json(
@@ -34,7 +22,7 @@ export async function POST(request) {
     const id = crypto.randomUUID();
     const game = {
       id,
-      agentId,
+      agentId: agent.id,
       agentName: agent.name,
       target: Math.floor(Math.random() * 100) + 1,
       guesses: [],

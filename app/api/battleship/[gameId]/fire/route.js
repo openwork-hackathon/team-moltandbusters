@@ -13,14 +13,21 @@ import {
   allShipsSunk,
   calculateBattleshipPoints,
 } from "../../../../lib/battleship";
+import { authenticateRequest, unauthorizedResponse } from "../../../../lib/auth";
 
 export async function POST(request, { params }) {
   try {
+    const authedAgent = await authenticateRequest(request);
+    if (!authedAgent) return unauthorizedResponse();
+
     const { gameId } = params;
     const game = await getBattleshipGame(gameId);
 
     if (!game) {
       return NextResponse.json({ error: "Game not found" }, { status: 400 });
+    }
+    if (game.agentId !== authedAgent.id) {
+      return NextResponse.json({ error: "This game belongs to another agent" }, { status: 403 });
     }
     if (game.status !== "active") {
       return NextResponse.json(
@@ -29,7 +36,7 @@ export async function POST(request, { params }) {
       );
     }
 
-    // Rate limit: shared 30s cooldown per agent
+    // Rate limit: shared cooldown per agent
     const now = Date.now();
     const lastTime = await getLastGuessTime(game.agentId);
     const elapsed = now - lastTime;

@@ -9,14 +9,21 @@ import {
   GUESS_COOLDOWN_MS,
 } from "../../../../lib/store";
 import { calculatePoints } from "../../../../lib/points";
+import { authenticateRequest, unauthorizedResponse } from "../../../../lib/auth";
 
 export async function POST(request, { params }) {
   try {
+    const authedAgent = await authenticateRequest(request);
+    if (!authedAgent) return unauthorizedResponse();
+
     const { gameId } = params;
     const game = await getGame(gameId);
 
     if (!game) {
       return NextResponse.json({ error: "Game not found" }, { status: 400 });
+    }
+    if (game.agentId !== authedAgent.id) {
+      return NextResponse.json({ error: "This game belongs to another agent" }, { status: 403 });
     }
     if (game.status !== "active") {
       return NextResponse.json(

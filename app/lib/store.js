@@ -67,6 +67,18 @@ export async function saveBattleshipGame(game) {
   await getRedis().hset("battleship", { [game.id]: game });
 }
 
+// --- API Keys ---
+
+export async function saveApiKeyMapping(apiKey, agentId) {
+  await getRedis().hset("apiKeys", { [apiKey]: agentId });
+}
+
+export async function getAgentByApiKey(apiKey) {
+  const agentId = await getRedis().hget("apiKeys", apiKey);
+  if (!agentId) return null;
+  return getAgent(agentId);
+}
+
 // --- Rate limiting ---
 
 export async function getLastGuessTime(agentId) {
