@@ -37,7 +37,12 @@ export default function LiveGames() {
     ...guessGames.map((g) => ({ ...g, _type: "guess" })),
     ...bsGames.map((g) => ({ ...g, _type: "battleship" })),
     ...mazeGames.map((g) => ({ ...g, _type: "mousemaze" })),
-  ].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
+  ].sort((a, b) => {
+    // Active games first, then by most recent
+    if (a.status === "active" && b.status !== "active") return -1;
+    if (a.status !== "active" && b.status === "active") return 1;
+    return new Date(b.startedAt) - new Date(a.startedAt);
+  });
 
   const selectedGame =
     selectedId

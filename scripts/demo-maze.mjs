@@ -13,7 +13,7 @@
 const BASE = process.argv[2] || "https://moltandbusters.vercel.app";
 const NAME = process.argv[3] || `MazeBot-${Math.floor(Math.random() * 9000) + 1000}`;
 const WALLET = "0x0000000000000000000000000000000000000001";
-const COOLDOWN = 6_000;
+const COOLDOWN = 2_000;
 
 let API_KEY = "";
 
@@ -154,7 +154,7 @@ async function main() {
 
     // Wait for cooldown before next move
     if (i < path.length - 1) {
-      log(`  Waiting 6s...`);
+      log(`  Waiting 2s...`);
       await sleep(COOLDOWN);
     }
   }

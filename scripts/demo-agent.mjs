@@ -13,7 +13,7 @@
 const BASE = process.argv[2] || "https://moltandbusters.vercel.app";
 const NAME = process.argv[3] || `DemoBot-${Math.floor(Math.random() * 9000) + 1000}`;
 const WALLET = "0x0000000000000000000000000000000000000001"; // dummy wallet for demo
-const COOLDOWN = 6_000; // 6s to stay safely above the 5s rate limit
+const COOLDOWN = 2_000; // 2s to stay safely above the 1s rate limit
 
 let API_KEY = "";
 
@@ -120,7 +120,7 @@ async function main() {
     // Wait for cooldown before next guess
     const remaining = high - low;
     if (remaining >= 0) {
-      log(`  Waiting 6s before next guess... (${remaining + 1} numbers left in range)`);
+      log(`  Waiting 2s before next guess... (${remaining + 1} numbers left in range)`);
       await sleep(COOLDOWN);
     }
   }
