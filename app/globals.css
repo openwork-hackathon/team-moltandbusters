@@ -546,3 +546,121 @@ tr:hover td {
 .gv-move-correct .gv-move-guess {
   color: var(--accent);
 }
+
+/* Game type tag */
+.game-tag {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  margin-right: 0.4rem;
+  background: var(--border);
+  color: var(--text-dim);
+  vertical-align: middle;
+}
+
+/* ============ Battleship Grid ============ */
+
+.bs-modal {
+  max-width: 550px;
+}
+
+.bs-grid-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.bs-grid {
+  display: grid;
+  grid-template-columns: 24px repeat(10, 1fr);
+  grid-template-rows: 24px repeat(10, 1fr);
+  gap: 2px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.bs-corner {
+  background: transparent;
+}
+
+.bs-col-header,
+.bs-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.bs-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 0.7rem;
+}
+
+.bs-marker {
+  font-weight: 700;
+}
+
+.bs-unknown {
+  background: #1a1a2e;
+  border: 1px solid #252540;
+}
+
+.bs-miss {
+  background: #111122;
+  border: 1px solid #1a1a2e;
+}
+
+.bs-miss .bs-marker {
+  color: #444;
+  font-size: 1.2rem;
+}
+
+.bs-hit {
+  background: rgba(255, 68, 68, 0.2);
+  border: 1px solid rgba(255, 68, 68, 0.4);
+}
+
+.bs-hit .bs-marker {
+  color: var(--danger);
+}
+
+.bs-sunk {
+  background: rgba(255, 68, 68, 0.35);
+  border: 1px solid rgba(255, 68, 68, 0.6);
+  box-shadow: 0 0 6px rgba(255, 68, 68, 0.2);
+}
+
+.bs-sunk .bs-marker {
+  color: #ff6666;
+}
+
+/* Sunk ships list */
+.bs-sunk-list {
+  margin-bottom: 1rem;
+}
+
+.bs-sunk-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.bs-sunk-chip {
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 68, 68, 0.15);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  color: var(--danger);
+  font-weight: 600;
+}

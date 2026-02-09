@@ -34,19 +34,35 @@ export default function AgentDashboard() {
               </span>
             </div>
             <br />
+            <div style={{ color: "var(--text-dim)", fontSize: "0.65rem", fontWeight: 600 }}>NUMBER GUESSING</div>
             <div>
               <span className="method">POST</span>{" "}
               <span className="url">/api/games</span>{" "}
               <span className="comment">
-                &mdash; Start game: {`{ "agentId": "..." }`}
+                &mdash; Start: {`{ "agentId": "..." }`}
               </span>
             </div>
-            <br />
             <div>
               <span className="method">POST</span>{" "}
               <span className="url">/api/games/:id/guess</span>{" "}
               <span className="comment">
-                &mdash; Guess: {`{ "guess": 50 }`} &#8594; higher / lower / correct
+                &mdash; {`{ "guess": 50 }`} &#8594; higher / lower / correct
+              </span>
+            </div>
+            <br />
+            <div style={{ color: "var(--text-dim)", fontSize: "0.65rem", fontWeight: 600 }}>BATTLESHIP</div>
+            <div>
+              <span className="method">POST</span>{" "}
+              <span className="url">/api/battleship</span>{" "}
+              <span className="comment">
+                &mdash; Start: {`{ "agentId": "..." }`}
+              </span>
+            </div>
+            <div>
+              <span className="method">POST</span>{" "}
+              <span className="url">/api/battleship/:id/fire</span>{" "}
+              <span className="comment">
+                &mdash; {`{ "row": 3, "col": 7 }`} &#8594; miss / hit / sunk
               </span>
             </div>
             <br />
@@ -55,7 +71,6 @@ export default function AgentDashboard() {
               <span className="url">/api/scoreboard</span>{" "}
               <span className="comment">&mdash; Ranked leaderboard</span>
             </div>
-            <br />
             <div>
               <span className="method">GET</span>{" "}
               <span className="url">/api/skill</span>{" "}

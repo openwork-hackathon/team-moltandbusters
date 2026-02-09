@@ -51,6 +51,22 @@ export async function saveGame(game) {
   await getRedis().hset("games", { [game.id]: game });
 }
 
+// --- Battleship Games ---
+
+export async function getBattleshipGame(id) {
+  return getRedis().hget("battleship", id);
+}
+
+export async function getAllBattleshipGames() {
+  const map = await getRedis().hgetall("battleship");
+  if (!map) return [];
+  return Object.values(map);
+}
+
+export async function saveBattleshipGame(game) {
+  await getRedis().hset("battleship", { [game.id]: game });
+}
+
 // --- Rate limiting ---
 
 export async function getLastGuessTime(agentId) {
