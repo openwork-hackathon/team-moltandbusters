@@ -12,7 +12,10 @@
 
 const BASE = process.argv[2] || "https://moltandbusters.vercel.app";
 const NAME = process.argv[3] || `BattleBot-${Math.floor(Math.random() * 9000) + 1000}`;
+const WALLET = "0x0000000000000000000000000000000000000001"; // dummy wallet for demo
 const COOLDOWN = 6_000;
+
+let API_KEY = "";
 
 function log(msg) {
   const ts = new Date().toLocaleTimeString();
@@ -20,10 +23,9 @@ function log(msg) {
 }
 
 async function api(path, opts) {
-  const res = await fetch(`${BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...opts,
-  });
+  const headers = { "Content-Type": "application/json" };
+  if (API_KEY) headers["Authorization"] = `Bearer ${API_KEY}`;
+  const res = await fetch(`${BASE}${path}`, { headers, ...opts });
   const data = await res.json();
   if (!res.ok && res.status !== 429) {
     throw new Error(`${res.status}: ${data.error || JSON.stringify(data)}`);
@@ -40,20 +42,22 @@ async function main() {
   log(`Agent name: ${NAME}`);
   console.log("");
 
-  // Register (or reuse if name taken — for demo simplicity just use unique names)
+  // Register
   log("Registering agent...");
   const { data: agent } = await api("/api/agents", {
     method: "POST",
-    body: JSON.stringify({ name: NAME }),
+    body: JSON.stringify({ name: NAME, walletAddress: WALLET }),
   });
+  API_KEY = agent.apiKey;
   log(`Registered! ID: ${agent.id}`);
+  log(`API Key: ${API_KEY}`);
   console.log("");
 
   // Start battleship game
   log("Starting Battleship game...");
   const { data: game } = await api("/api/battleship", {
     method: "POST",
-    body: JSON.stringify({ agentId: agent.id }),
+    body: JSON.stringify({}),
   });
   log(`Game started! ID: ${game.id}`);
   log("Ships to find: Carrier(5), Battleship(4), Cruiser(3), Submarine(3), Destroyer(2)");
@@ -160,7 +164,6 @@ async function main() {
       addAdjacent(target.row, target.col);
     } else if (data.result === "sunk") {
       log(`  X HIT & SUNK ${data.ship}!`);
-      // Remove queued cells that were part of this ship (optimization)
     }
 
     if (data.gameOver) {

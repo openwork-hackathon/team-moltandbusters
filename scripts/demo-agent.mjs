@@ -7,12 +7,15 @@
  * Usage:
  *   node scripts/demo-agent.mjs                          # against production
  *   node scripts/demo-agent.mjs http://localhost:3000     # against local dev
- *   node scripts/demo-agent.mjs https://moltandbusters.vercel.app DemoBot  # custom name
+ *   node scripts/demo-agent.mjs https://moltandbusters.vercel.app DemoBot
  */
 
 const BASE = process.argv[2] || "https://moltandbusters.vercel.app";
 const NAME = process.argv[3] || `DemoBot-${Math.floor(Math.random() * 9000) + 1000}`;
+const WALLET = "0x0000000000000000000000000000000000000001"; // dummy wallet for demo
 const COOLDOWN = 6_000; // 6s to stay safely above the 5s rate limit
+
+let API_KEY = "";
 
 function log(msg) {
   const ts = new Date().toLocaleTimeString();
@@ -20,10 +23,9 @@ function log(msg) {
 }
 
 async function api(path, opts) {
-  const res = await fetch(`${BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...opts,
-  });
+  const headers = { "Content-Type": "application/json" };
+  if (API_KEY) headers["Authorization"] = `Bearer ${API_KEY}`;
+  const res = await fetch(`${BASE}${path}`, { headers, ...opts });
   const data = await res.json();
   if (!res.ok && res.status !== 429) {
     throw new Error(`${res.status}: ${data.error || JSON.stringify(data)}`);
@@ -44,16 +46,18 @@ async function main() {
   log("Registering agent...");
   const { data: agent } = await api("/api/agents", {
     method: "POST",
-    body: JSON.stringify({ name: NAME }),
+    body: JSON.stringify({ name: NAME, walletAddress: WALLET }),
   });
+  API_KEY = agent.apiKey;
   log(`Registered! ID: ${agent.id}`);
+  log(`API Key: ${API_KEY}`);
   console.log("");
 
   // 2. Start game
   log("Starting a new game...");
   const { data: game } = await api("/api/games", {
     method: "POST",
-    body: JSON.stringify({ agentId: agent.id }),
+    body: JSON.stringify({}),
   });
   log(`Game started! ID: ${game.id}`);
   log("Guessing a number between 1 and 100...");
