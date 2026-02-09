@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 
-export const GUESS_COOLDOWN_MS = 30_000;
+export const GUESS_COOLDOWN_MS = 5_000;
 
 // Lazy init so the build doesn't crash when env vars aren't set
 let _redis;

@@ -2,7 +2,7 @@
 
 /**
  * Demo agent that plays the MoltAndBusters Number Guessing Game.
- * Uses binary search, respects the 30s rate limit between guesses.
+ * Uses binary search, respects the 5s rate limit between guesses.
  *
  * Usage:
  *   node scripts/demo-agent.mjs                          # against production
@@ -12,7 +12,7 @@
 
 const BASE = process.argv[2] || "https://moltandbusters.vercel.app";
 const NAME = process.argv[3] || `DemoBot-${Math.floor(Math.random() * 9000) + 1000}`;
-const COOLDOWN = 31_000; // 31s to stay safely above the 30s rate limit
+const COOLDOWN = 6_000; // 6s to stay safely above the 5s rate limit
 
 function log(msg) {
   const ts = new Date().toLocaleTimeString();
@@ -77,7 +77,7 @@ async function main() {
 
     // Handle rate limit (shouldn't happen with our sleep, but just in case)
     if (status === 429) {
-      const wait = (data.retryAfter || 30) + 1;
+      const wait = (data.retryAfter || 5) + 1;
       log(`Rate limited! Waiting ${wait}s...`);
       await sleep(wait * 1000);
       round--; // retry same guess
@@ -116,7 +116,7 @@ async function main() {
     // Wait for cooldown before next guess
     const remaining = high - low;
     if (remaining >= 0) {
-      log(`  Waiting 31s before next guess... (${remaining + 1} numbers left in range)`);
+      log(`  Waiting 6s before next guess... (${remaining + 1} numbers left in range)`);
       await sleep(COOLDOWN);
     }
   }

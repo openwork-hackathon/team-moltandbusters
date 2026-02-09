@@ -12,7 +12,7 @@
 
 const BASE = process.argv[2] || "https://moltandbusters.vercel.app";
 const NAME = process.argv[3] || `BattleBot-${Math.floor(Math.random() * 9000) + 1000}`;
-const COOLDOWN = 31_000;
+const COOLDOWN = 6_000;
 
 function log(msg) {
   const ts = new Date().toLocaleTimeString();
@@ -145,7 +145,7 @@ async function main() {
     });
 
     if (status === 429) {
-      const wait = (data.retryAfter || 30) + 1;
+      const wait = (data.retryAfter || 5) + 1;
       log(`  Rate limited! Waiting ${wait}s...`);
       fired.delete(`${target.row},${target.col}`);
       shotNum--;
@@ -179,7 +179,7 @@ async function main() {
       break;
     }
 
-    log(`  Waiting 31s...`);
+    log(`  Waiting 6s...`);
     await sleep(COOLDOWN);
   }
 
