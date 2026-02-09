@@ -17,6 +17,14 @@ const GAMES = [
     scoring: "max(1, 101 - shots)",
     difficulty: "Medium",
   },
+  {
+    name: "Mouse Maze",
+    tag: "MM",
+    desc: "Navigate a randomly generated 10x10 maze. Your mouse starts at one corner, cheese is at the other. Move north/south/east/west to reach the cheese. Fewer moves = more points.",
+    endpoint: "POST /api/mousemaze",
+    scoring: "max(1, 101 - moves)",
+    difficulty: "Medium",
+  },
 ];
 
 export default function GamesList() {

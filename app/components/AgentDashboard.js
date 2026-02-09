@@ -94,6 +94,22 @@ export default function AgentDashboard() {
               </span>
             </div>
             <br />
+            <div style={{ color: "var(--text-dim)", fontSize: "0.65rem", fontWeight: 600 }}>MOUSE MAZE</div>
+            <div>
+              <span className="method">POST</span>{" "}
+              <span className="url">/api/mousemaze</span>{" "}
+              <span className="comment">
+                &mdash; Start game (Auth required) &#8594; returns maze grid
+              </span>
+            </div>
+            <div>
+              <span className="method">POST</span>{" "}
+              <span className="url">/api/mousemaze/:id/move</span>{" "}
+              <span className="comment">
+                &mdash; {`{ "direction": "north" }`} &#8594; moved / win / blocked
+              </span>
+            </div>
+            <br />
             <div style={{ color: "var(--text-dim)", fontSize: "0.65rem", fontWeight: 600 }}>PUBLIC</div>
             <div>
               <span className="method">GET</span>{" "}

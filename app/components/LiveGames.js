@@ -2,10 +2,12 @@
 import { useState, useEffect } from "react";
 import GameViewer from "./GameViewer";
 import BattleshipViewer from "./BattleshipViewer";
+import MazeViewer from "./MazeViewer";
 
 export default function LiveGames() {
   const [guessGames, setGuessGames] = useState([]);
   const [bsGames, setBsGames] = useState([]);
+  const [mazeGames, setMazeGames] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
 
@@ -19,6 +21,10 @@ export default function LiveGames() {
         .then((r) => r.json())
         .then((data) => setBsGames(data.slice(0, 20)))
         .catch(() => {});
+      fetch("/api/mousemaze")
+        .then((r) => r.json())
+        .then((data) => setMazeGames(data.slice(0, 20)))
+        .catch(() => {});
     };
 
     load();
@@ -30,6 +36,7 @@ export default function LiveGames() {
   const allGames = [
     ...guessGames.map((g) => ({ ...g, _type: "guess" })),
     ...bsGames.map((g) => ({ ...g, _type: "battleship" })),
+    ...mazeGames.map((g) => ({ ...g, _type: "mousemaze" })),
   ].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
 
   const selectedGame =
@@ -47,6 +54,35 @@ export default function LiveGames() {
     }
   }
 
+  function getTag(type) {
+    if (type === "battleship") return { label: "BS", cls: "game-tag-bs" };
+    if (type === "mousemaze") return { label: "MM", cls: "game-tag-mm" };
+    return { label: "NG", cls: "game-tag-ng" };
+  }
+
+  function getMeta(g) {
+    if (g._type === "battleship") {
+      return (
+        <>
+          {g.shotCount} shot{g.shotCount !== 1 ? "s" : ""}
+          {g.status === "active" && <> &middot; {g.shipsRemaining} ships left</>}
+        </>
+      );
+    }
+    if (g._type === "mousemaze") {
+      return (
+        <>
+          {g.moveCount} move{g.moveCount !== 1 ? "s" : ""}
+        </>
+      );
+    }
+    return (
+      <>
+        {g.guesses.length} guess{g.guesses.length !== 1 ? "es" : ""}
+      </>
+    );
+  }
+
   return (
     <div className="card">
       <h2>
@@ -59,34 +95,28 @@ export default function LiveGames() {
         <p className="empty">No games yet. Agents are warming up...</p>
       ) : (
         <div>
-          {allGames.map((g) => (
-            <div
-              className={`game-item game-item-clickable ${selectedId === g.id ? "game-item-selected" : ""}`}
-              key={g.id}
-              onClick={() => handleClick(g)}
-            >
-              <span className={`game-tag ${g._type === "battleship" ? "game-tag-bs" : "game-tag-ng"}`}>{g._type === "battleship" ? "BS" : "NG"}</span>
-              <span className="game-agent">{g.agentName}</span>
-              <span className={`game-status ${g.status}`}>{g.status}</span>
-              <span className="game-meta">
-                {g._type === "battleship" ? (
-                  <>
-                    {g.shotCount} shot{g.shotCount !== 1 ? "s" : ""}
-                    {g.status === "active" && <> &middot; {g.shipsRemaining} ships left</>}
-                  </>
-                ) : (
-                  <>
-                    {g.guesses.length} guess{g.guesses.length !== 1 ? "es" : ""}
-                  </>
-                )}
-                {g.status === "won" && (
-                  <>
-                    {" "}&middot; <span className="points">+{g.points}pts</span>
-                  </>
-                )}
-              </span>
-            </div>
-          ))}
+          {allGames.map((g) => {
+            const tag = getTag(g._type);
+            return (
+              <div
+                className={`game-item game-item-clickable ${selectedId === g.id ? "game-item-selected" : ""}`}
+                key={g.id}
+                onClick={() => handleClick(g)}
+              >
+                <span className={`game-tag ${tag.cls}`}>{tag.label}</span>
+                <span className="game-agent">{g.agentName}</span>
+                <span className={`game-status ${g.status}`}>{g.status}</span>
+                <span className="game-meta">
+                  {getMeta(g)}
+                  {g.status === "won" && (
+                    <>
+                      {" "}&middot; <span className="points">+{g.points}pts</span>
+                    </>
+                  )}
+                </span>
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -95,6 +125,9 @@ export default function LiveGames() {
       )}
       {selectedGame && selectedType === "battleship" && (
         <BattleshipViewer game={selectedGame} onClose={() => setSelectedId(null)} />
+      )}
+      {selectedGame && selectedType === "mousemaze" && (
+        <MazeViewer game={selectedGame} onClose={() => setSelectedId(null)} />
       )}
     </div>
   );
