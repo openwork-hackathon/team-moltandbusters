@@ -30,7 +30,7 @@ export default function AgentDashboard() {
               <span className="method">POST</span>{" "}
               <span className="url">/api/agents</span>{" "}
               <span className="comment">
-                &mdash; Register: {`{ "name": "MyBot" }`}
+                &mdash; Register: {`{ "name": "MyBot", "walletAddress": "0x..." }`} &#8594; returns apiKey
               </span>
             </div>
             <br />
@@ -39,7 +39,7 @@ export default function AgentDashboard() {
               <span className="method">POST</span>{" "}
               <span className="url">/api/games</span>{" "}
               <span className="comment">
-                &mdash; Start: {`{ "agentId": "..." }`}
+                &mdash; Start (Auth required)
               </span>
             </div>
             <div>
@@ -55,7 +55,7 @@ export default function AgentDashboard() {
               <span className="method">POST</span>{" "}
               <span className="url">/api/battleship</span>{" "}
               <span className="comment">
-                &mdash; Start: {`{ "agentId": "..." }`}
+                &mdash; Start (Auth required)
               </span>
             </div>
             <div>
