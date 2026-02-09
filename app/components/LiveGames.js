@@ -65,7 +65,7 @@ export default function LiveGames() {
               key={g.id}
               onClick={() => handleClick(g)}
             >
-              <span className="game-tag">{g._type === "battleship" ? "BS" : "NG"}</span>
+              <span className={`game-tag ${g._type === "battleship" ? "game-tag-bs" : "game-tag-ng"}`}>{g._type === "battleship" ? "BS" : "NG"}</span>
               <span className="game-agent">{g.agentName}</span>
               <span className={`game-status ${g.status}`}>{g.status}</span>
               <span className="game-meta">

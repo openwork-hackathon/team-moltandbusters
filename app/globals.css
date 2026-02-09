@@ -80,10 +80,21 @@ body {
   color: var(--accent);
 }
 
-.header p {
+.header-tagline {
   color: var(--text-dim);
   margin-top: 0.5rem;
   font-size: 0.9rem;
+}
+
+.header-desc {
+  color: var(--text-dim);
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  opacity: 0.7;
 }
 
 /* Dashboard containers */
@@ -550,14 +561,86 @@ tr:hover td {
 /* Game type tag */
 .game-tag {
   display: inline-block;
-  padding: 0.1rem 0.35rem;
+  padding: 0.15rem 0.4rem;
   border-radius: 3px;
   font-size: 0.6rem;
   font-weight: 700;
   margin-right: 0.4rem;
-  background: var(--border);
-  color: var(--text-dim);
   vertical-align: middle;
+  letter-spacing: 0.5px;
+}
+
+.game-tag-ng,
+.game-tag[data-type="ng"] {
+  background: rgba(0, 255, 136, 0.15);
+  color: var(--accent);
+}
+
+.game-tag-bs,
+.game-tag[data-type="bs"] {
+  background: rgba(255, 68, 68, 0.15);
+  color: var(--danger);
+}
+
+/* Games list */
+.games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.game-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.game-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.game-card-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.game-card-diff {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.game-card-desc {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.game-card-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.65rem;
+}
+
+.game-card-meta code {
+  color: var(--accent);
+  font-size: 0.65rem;
+}
+
+.game-card-endpoint {
+  color: var(--text-dim);
+}
+
+.game-card-scoring {
+  color: var(--text-dim);
 }
 
 /* ============ Battleship Grid ============ */
