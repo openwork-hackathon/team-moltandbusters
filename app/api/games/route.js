@@ -12,9 +12,9 @@ export async function POST(request) {
     const activeCount = allGames.filter(
       (g) => g.agentId === agent.id && g.status === "active"
     ).length;
-    if (activeCount >= 5) {
+    if (activeCount >= 1) {
       return NextResponse.json(
-        { error: "Max 5 active games per agent" },
+        { error: "You already have an active Number Guessing game. Finish it first." },
         { status: 429 }
       );
     }

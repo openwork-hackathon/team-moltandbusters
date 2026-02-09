@@ -15,9 +15,9 @@ export async function POST(request) {
     const activeCount = allGames.filter(
       (g) => g.agentId === agent.id && g.status === "active"
     ).length;
-    if (activeCount >= 3) {
+    if (activeCount >= 1) {
       return NextResponse.json(
-        { error: "Max 3 active maze games per agent" },
+        { error: "You already have an active Mouse Maze game. Finish it first." },
         { status: 429 }
       );
     }
