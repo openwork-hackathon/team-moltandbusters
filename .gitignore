@@ -2,3 +2,6 @@ node_modules
 .next
 .vercel
 .env.local
+scripts/.*-key
+scripts/*.log
+scripts/create-token.mjs
