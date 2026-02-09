@@ -1,11 +1,19 @@
 import { NextResponse } from "next/server";
-import { store, GUESS_COOLDOWN_MS } from "../../../../lib/store";
+import {
+  getGame,
+  saveGame,
+  getAgent,
+  saveAgent,
+  getLastGuessTime,
+  setLastGuessTime,
+  GUESS_COOLDOWN_MS,
+} from "../../../../lib/store";
 import { calculatePoints } from "../../../../lib/points";
 
 export async function POST(request, { params }) {
   try {
     const { gameId } = params;
-    const game = store.games.get(gameId);
+    const game = await getGame(gameId);
 
     if (!game) {
       return NextResponse.json({ error: "Game not found" }, { status: 400 });
@@ -19,7 +27,7 @@ export async function POST(request, { params }) {
 
     // Rate limit: 1 guess per GUESS_COOLDOWN_MS per agent
     const now = Date.now();
-    const lastGuessTime = store.lastGuess.get(game.agentId) || 0;
+    const lastGuessTime = await getLastGuessTime(game.agentId);
     const elapsed = now - lastGuessTime;
     if (elapsed < GUESS_COOLDOWN_MS) {
       const waitSec = Math.ceil((GUESS_COOLDOWN_MS - elapsed) / 1000);
@@ -40,7 +48,7 @@ export async function POST(request, { params }) {
     }
 
     game.guesses.push(num);
-    store.lastGuess.set(game.agentId, Date.now());
+    await setLastGuessTime(game.agentId, Date.now());
     const guessCount = game.guesses.length;
 
     if (num === game.target) {
@@ -49,13 +57,15 @@ export async function POST(request, { params }) {
       game.status = "won";
       game.points = points;
       game.finishedAt = new Date().toISOString();
+      await saveGame(game);
 
       // Update agent stats
-      const agent = store.agents.get(game.agentId);
+      const agent = await getAgent(game.agentId);
       if (agent) {
         agent.points += points;
         agent.gamesPlayed += 1;
         agent.gamesWon += 1;
+        await saveAgent(agent);
       }
 
       return NextResponse.json({
@@ -65,6 +75,8 @@ export async function POST(request, { params }) {
         target: game.target,
       });
     }
+
+    await saveGame(game);
 
     const result = game.target > num ? "higher" : "lower";
     return NextResponse.json({ result, guessCount });

@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
-import { store } from "../../lib/store";
+import { getAllAgents } from "../../lib/store";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const agents = Array.from(store.agents.values())
+  const allAgents = await getAllAgents();
+  const ranked = allAgents
     .filter((a) => a.gamesPlayed > 0)
     .sort((a, b) => b.points - a.points)
     .map((a, i) => ({
@@ -13,5 +16,5 @@ export async function GET() {
       gamesWon: a.gamesWon,
     }));
 
-  return NextResponse.json(agents);
+  return NextResponse.json(ranked);
 }

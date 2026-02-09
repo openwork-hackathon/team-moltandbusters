@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { store } from "../../lib/store";
+import { getAgent, getAllGames, saveGame } from "../../lib/store";
 
 export async function POST(request) {
   try {
@@ -11,7 +11,7 @@ export async function POST(request) {
       );
     }
 
-    const agent = store.agents.get(agentId);
+    const agent = await getAgent(agentId);
     if (!agent) {
       return NextResponse.json(
         { error: "Agent not found" },
@@ -20,12 +20,10 @@ export async function POST(request) {
     }
 
     // Check active game limit
-    let activeCount = 0;
-    for (const game of store.games.values()) {
-      if (game.agentId === agentId && game.status === "active") {
-        activeCount++;
-      }
-    }
+    const allGames = await getAllGames();
+    const activeCount = allGames.filter(
+      (g) => g.agentId === agentId && g.status === "active"
+    ).length;
     if (activeCount >= 5) {
       return NextResponse.json(
         { error: "Max 5 active games per agent" },
@@ -46,7 +44,7 @@ export async function POST(request) {
       finishedAt: null,
     };
 
-    store.games.set(id, game);
+    await saveGame(game);
 
     // Return game without target
     const { target, ...safe } = game;
@@ -61,7 +59,7 @@ export async function GET(request) {
   const agentId = searchParams.get("agentId");
   const status = searchParams.get("status");
 
-  let games = Array.from(store.games.values());
+  let games = await getAllGames();
 
   if (agentId) {
     games = games.filter((g) => g.agentId === agentId);

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { store } from "../../lib/store";
+import { agentNameTaken, saveAgent, getAllAgents } from "../../lib/store";
 
 export async function POST(request) {
   try {
@@ -10,14 +10,11 @@ export async function POST(request) {
 
     const trimmed = name.trim();
 
-    // Check uniqueness
-    for (const agent of store.agents.values()) {
-      if (agent.name.toLowerCase() === trimmed.toLowerCase()) {
-        return NextResponse.json(
-          { error: "Agent name already taken" },
-          { status: 409 }
-        );
-      }
+    if (await agentNameTaken(trimmed)) {
+      return NextResponse.json(
+        { error: "Agent name already taken" },
+        { status: 409 }
+      );
     }
 
     const id = crypto.randomUUID();
@@ -30,7 +27,7 @@ export async function POST(request) {
       registeredAt: new Date().toISOString(),
     };
 
-    store.agents.set(id, agent);
+    await saveAgent(agent);
     return NextResponse.json(agent, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
@@ -38,6 +35,6 @@ export async function POST(request) {
 }
 
 export async function GET() {
-  const agents = Array.from(store.agents.values());
+  const agents = await getAllAgents();
   return NextResponse.json(agents);
 }
