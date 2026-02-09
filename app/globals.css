@@ -320,3 +320,229 @@ tr:hover td {
 .full-width {
   grid-column: 1 / -1;
 }
+
+/* Clickable game items */
+.game-item-clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+  padding-left: 0.5rem;
+  margin-left: -0.5rem;
+  border-radius: 6px;
+}
+
+.game-item-clickable:hover {
+  background: #1a1a1a;
+}
+
+.game-item-selected {
+  background: rgba(0, 255, 136, 0.05) !important;
+  border-left: 2px solid var(--accent) !important;
+}
+
+/* Game Viewer Modal */
+.gv-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.gv-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.gv-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.gv-close:hover {
+  color: var(--text);
+}
+
+.gv-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.gv-info {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+/* Card grid */
+.gv-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 500px) {
+  .gv-cards {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+.gv-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.25rem;
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.gv-card-range {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  margin-bottom: 0.2rem;
+}
+
+/* Card states */
+.gv-idle {
+  background: var(--bg);
+}
+
+.gv-hot {
+  background: rgba(0, 255, 136, 0.06);
+  border-color: rgba(0, 255, 136, 0.3);
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.1);
+}
+
+.gv-guessed {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.gv-guessed-eliminated {
+  background: rgba(100, 50, 150, 0.08);
+  border-color: #333;
+  opacity: 0.6;
+}
+
+.gv-eliminated {
+  background: #111;
+  border-color: #1a1a1a;
+  opacity: 0.3;
+}
+
+.gv-correct {
+  background: rgba(0, 255, 136, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.3);
+}
+
+.gv-card-nums {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.gv-num {
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.gv-num-higher {
+  color: #ff8844;
+}
+
+.gv-num-lower {
+  color: #4488ff;
+}
+
+.gv-num-correct {
+  color: var(--accent);
+}
+
+.gv-card-star {
+  font-size: 0.7rem;
+  color: var(--accent);
+  font-weight: 800;
+  margin-top: 0.15rem;
+}
+
+/* Move timeline */
+.gv-timeline {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.gv-timeline-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.gv-move {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.3rem 0;
+  font-size: 0.75rem;
+}
+
+.gv-move-num {
+  color: var(--text-dim);
+  min-width: 1.5rem;
+}
+
+.gv-move-guess {
+  font-weight: 700;
+  min-width: 1.5rem;
+}
+
+.gv-move-dir {
+  min-width: 5rem;
+}
+
+.gv-move-range {
+  color: var(--text-dim);
+  font-size: 0.65rem;
+}
+
+.gv-move-higher .gv-move-dir {
+  color: #ff8844;
+}
+
+.gv-move-lower .gv-move-dir {
+  color: #4488ff;
+}
+
+.gv-move-correct .gv-move-dir {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.gv-move-correct .gv-move-guess {
+  color: var(--accent);
+}

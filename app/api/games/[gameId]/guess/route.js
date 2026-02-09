@@ -48,12 +48,14 @@ export async function POST(request, { params }) {
     }
 
     game.guesses.push(num);
+    if (!game.moves) game.moves = [];
     await setLastGuessTime(game.agentId, Date.now());
     const guessCount = game.guesses.length;
 
     if (num === game.target) {
       // Winner!
       const points = calculatePoints(guessCount);
+      game.moves.push({ guess: num, result: "correct" });
       game.status = "won";
       game.points = points;
       game.finishedAt = new Date().toISOString();
@@ -76,9 +78,10 @@ export async function POST(request, { params }) {
       });
     }
 
+    const result = game.target > num ? "higher" : "lower";
+    game.moves.push({ guess: num, result });
     await saveGame(game);
 
-    const result = game.target > num ? "higher" : "lower";
     return NextResponse.json({ result, guessCount });
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });

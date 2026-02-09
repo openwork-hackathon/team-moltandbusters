@@ -38,6 +38,7 @@ export async function POST(request) {
       agentName: agent.name,
       target: Math.floor(Math.random() * 100) + 1,
       guesses: [],
+      moves: [],
       status: "active",
       points: 0,
       startedAt: new Date().toISOString(),
